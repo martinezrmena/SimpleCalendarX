@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import usonsonatemio.com.simplecalendarxexample.SQLite.Notas;
 
@@ -13,6 +15,9 @@ public class ListaNotasDia extends AppCompatActivity {
     ArrayList<Notas> listaNotas, listaNotasNuevas;
     private AdaptadorNotas adaptadorNotas;
     ListView lstNotas;
+    String MES[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+    int mes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,10 @@ public class ListaNotasDia extends AppCompatActivity {
         lstNotas.setAdapter(adaptadorNotas);
 
         FillListEncuestado();
+
+        Calendar calendar = convertirACalendar(listaNotas.get(0).getFechanota());
+
+        setTitle(MES[calendar.get(Calendar.MONTH)]+ ", " + calendar.get(Calendar.DAY_OF_MONTH) + " - " + calendar.get(Calendar.YEAR ));
     }
 
     private void FillListEncuestado(){
@@ -38,5 +47,27 @@ public class ListaNotasDia extends AppCompatActivity {
             listaNotasNuevas.add(c);
             adaptadorNotas.notifyDataSetChanged();
         }
+    }
+
+
+    private Calendar convertirACalendar(String fecha){
+        String[] fechArray = fecha.split("-");
+
+
+        int anio = Integer.parseInt(fechArray[0]);
+        int mes =  Integer.parseInt(fechArray[1]) - 1;
+        int dia =  Integer.parseInt(fechArray[2]);
+
+        /*
+         *
+         * Al mes lo resto 1 (-1) ya que el formato de Calendar el mes empieza en 0
+         * Enero=0, Febrero=1, Marzo=2, ... , Diciembre=11
+         * De lo contrario Diciembre (12) no funcionaria
+         *
+         * */
+
+        Calendar c1 = new GregorianCalendar(anio, mes, dia);
+
+        return c1;
     }
 }

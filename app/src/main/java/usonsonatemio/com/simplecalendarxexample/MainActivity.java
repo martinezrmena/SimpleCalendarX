@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView = findViewById(R.id.calendarView);
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
+        setTitle("Agregar notas");
+
         //Notas por día
         lstNotasDia = new ArrayList<>();
 
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             intento.putExtras(contenedor);
             startActivity(intento);
         }else{
-            Toast.makeText(this, "No ha realizado ninguna registro.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No ha agregado ninguna nota.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -190,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("MM");
         String fechaComoCadena = sdf.format(date);
 
-        Toast.makeText(this, fechaComoCadena, Toast.LENGTH_SHORT).show();
         return fechaComoCadena;
     }
 

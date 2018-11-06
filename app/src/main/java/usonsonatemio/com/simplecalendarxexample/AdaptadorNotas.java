@@ -30,7 +30,6 @@ public class AdaptadorNotas extends ArrayAdapter<Notas> {
 
             TextView lblId = (TextView) convertView.findViewById(R.id.lblId);
             TextView lblNota = (TextView) convertView.findViewById(R.id.lblNota);
-            TextView lblFecha = (TextView) convertView.findViewById(R.id.lblFecha);
             String p = String.valueOf(position+1);
 
 
@@ -38,7 +37,6 @@ public class AdaptadorNotas extends ArrayAdapter<Notas> {
 
             lblId.setText(p);
             lblNota.setText(nota.getNota());
-            lblFecha.setText(nota.getFechanota());
 
             // Return la convertView ya con los datos
             return convertView;
