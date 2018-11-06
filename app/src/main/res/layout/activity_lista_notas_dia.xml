@@ -13,4 +13,44 @@
         android:layout_height="match_parent"
 
         />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/btnMainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:fab_colorNormal="@color/colorPrimary"
+        app:fab_colorPressed="@color/colorPrimaryDark"
+        app:fab_addButtonPlusIconColor="#ffff"
+        app:fab_labelStyle="@style/menu_labels_style"
+        >
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnDeleteNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnEliminarOnClick"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_icon="@drawable/delete_note"
+            app:fab_size="mini"
+            app:fab_title="Eliminar nota" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnUpdateNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnActualizarOnClick"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_icon="@drawable/edit_note"
+            app:fab_size="mini"
+            app:fab_title="Actualizar nota"
+            app:layout_constraintBottom_toTopOf="@+id/MainButton" />
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 </RelativeLayout>

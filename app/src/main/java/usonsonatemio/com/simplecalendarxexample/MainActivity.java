@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             guardar(myEventDay);
+            ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
         }
     }
 
