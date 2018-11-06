@@ -1,6 +1,8 @@
 package usonsonatemio.com.simplecalendarxexample.SQLite;
 
-public class Notas {
+import java.io.Serializable;
+
+public class Notas implements Serializable {
 
     private String id;
     private String fechanota;

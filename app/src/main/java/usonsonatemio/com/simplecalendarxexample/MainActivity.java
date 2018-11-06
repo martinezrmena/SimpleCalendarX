@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 
 import java.text.ParseException;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private List<EventDay> mEventDays = new ArrayList<>();
     //lista de datos (nota)
     private ArrayList<Notas> lstNotas;
+    private ArrayList<Notas> lstNotasDia;
     Calendar c;
     Date lastdate;
 
@@ -47,10 +49,15 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView = findViewById(R.id.calendarView);
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
+        //Notas por día
+        lstNotasDia = new ArrayList<>();
+
+        //Inicializamos el calendario del sistema para poder asignar una fecha
         c = Calendar.getInstance();
         lastdate = new Date();
         c.setTime(lastdate);
 
+        //Establecemos la fecha de inicio del calendario principal (widget)
         try {
             mCalendarView.setDate(c);
         } catch (OutOfDateRangeException e) {
@@ -58,10 +65,78 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //inicializando lista y db
-        db = new DB(this);
+        db = new DB(MainActivity.this);
+
+        //Consultamos las notas del mes del calendario con el mes que iniciara
+        ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
+
+
+        //Evento para el boton flotante
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNote();
+            }
+        });
+
+        //Evento para visualizar la nota sobre el boton que pulsemos
+        mCalendarView.setOnDayClickListener(new OnDayClickListener() {
+            @Override
+            public void onDayClick(EventDay eventDay) {
+                //previewNote(eventDay);
+                BuscarNotasDia(eventDay.getCalendar().getTime());
+                ListaNotasporDia();
+            }
+        });
+
+        mCalendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+                ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
+            }
+        });
+
+        mCalendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+                ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
+            }
+        });
+
+    }
+
+    private void ListaNotasporDia(){
+
+        if (lstNotasDia.size() != 0){
+            Intent intento = new Intent(MainActivity.this, ListaNotasDia.class);
+            Bundle contenedor = new Bundle();
+            contenedor.putSerializable("array", lstNotasDia);
+            intento.putExtras(contenedor);
+            startActivity(intento);
+        }else{
+            Toast.makeText(this, "No ha realizado ninguna registro.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void BuscarNotasDia(Date fechanotas){
+
+        lstNotasDia = new ArrayList<>();
+
+        for (final Notas nota:lstNotas){
+
+            if(convertirDateToString(fechanotas).equals(nota.getFechanota())){
+                lstNotasDia.add(nota);
+            }
+        }
+
+    }
+
+    private void ConsultarNotasMes(Date currentdate){
+
+        lstNotas = null;
 
         lstNotas = db.getArrayNotas(
-                db.getCursorNota(String.valueOf(convertirDateToStringMonth(lastdate)))
+                db.getCursorNota(String.valueOf(convertirDateToStringMonth(currentdate)))
         );
 
         if(lstNotas==null){
@@ -81,18 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNote();
-            }
-        });
-        mCalendarView.setOnDayClickListener(new OnDayClickListener() {
-            @Override
-            public void onDayClick(EventDay eventDay) {
-                previewNote(eventDay);
-            }
-        });
     }
 
     private void guardar(MyEventDay myEventDay){
@@ -127,7 +190,25 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("MM");
         String fechaComoCadena = sdf.format(date);
 
+        Toast.makeText(this, fechaComoCadena, Toast.LENGTH_SHORT).show();
         return fechaComoCadena;
+    }
+
+    private Date cambiar_mes(Date fecha, int cambio){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setLenient(false);
+
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.add(calendar.MONTH, cambio);  // numero de meses a añadir, o restar en caso de días<0
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.format(calendar.getTime());//Le da formato a la fecha
+
+        fecha = calendar.getTime();
+
+        Toast.makeText(MainActivity.this, fecha.toString() + "" ,Toast.LENGTH_SHORT).show();
+        return fecha;
+
     }
 
     private Calendar convertirACalendar(String fecha){
@@ -170,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         //Formato que debe poseer la nota al enviarse para agregar al calendario
         //MyEventDay(Calendar day, int imageResource, String note)
 
-        mCalendarView.setDate(myEventDay.getCalendar());
+        //mCalendarView.setDate(myEventDay.getCalendar());
         mEventDays.add(myEventDay);
         mCalendarView.setEvents(mEventDays);
     }
@@ -179,7 +260,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddNoteActivity.class);
         startActivityForResult(intent, ADD_NOTE);
     }
+
     private void previewNote(EventDay eventDay) {
+
         Intent intent = new Intent(this, NotePreviewActivity.class);
         if(eventDay instanceof MyEventDay){
             intent.putExtra(EVENT, (MyEventDay) eventDay);
