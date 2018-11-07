@@ -32,6 +32,7 @@ public class ListaNotasDia extends AppCompatActivity {
     private Boolean Modificar, Eliminar;
     private String Message = "";
     private DB db;
+    public static final int NOTA_MODIFICAR = 78;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,9 @@ public class ListaNotasDia extends AppCompatActivity {
                                 db.borrarNota(String.valueOf(lastnota.getId()));
                                 Toast.makeText(ListaNotasDia.this, "Nota eliminada exitosamente.", Toast.LENGTH_SHORT ).show();
                             }else if(Modificar){
-                                db.guardar_O_ActualizarNotas(lastnota);
+                                Intent intent = new Intent(ListaNotasDia.this, ModificarNota.class);
+                                intent.putExtra("NOTA", lastnota);
+                                startActivity(intent);
                             }
 
                             Intent resultIntent = new Intent();
