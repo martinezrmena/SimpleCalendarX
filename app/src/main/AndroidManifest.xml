@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".AddNoteActivity" />
         <activity android:name=".NotePreviewActivity" />
-        <activity android:name=".ListaNotasDia"></activity>
+        <activity android:name=".ListaNotasDia" />
+        <activity android:name=".ModificarNota"></activity>
     </application>
 
 </manifest>

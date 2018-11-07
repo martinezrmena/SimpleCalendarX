@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String RESULT = "result";
     public static final String EVENT = "event";
     private static final int ADD_NOTE = 44;
+    public static final int LIST_NOTES = 45;
     private CalendarView mCalendarView;
     private List<EventDay> mEventDays = new ArrayList<>();
     //lista de datos (nota)
@@ -114,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
             Bundle contenedor = new Bundle();
             contenedor.putSerializable("array", lstNotasDia);
             intento.putExtras(contenedor);
-            startActivity(intento);
+            startActivityForResult(intento, LIST_NOTES);
         }else{
-            Toast.makeText(this, "No ha agregado ninguna nota.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No ha agregado ninguna nota para este día.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -245,8 +246,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             guardar(myEventDay);
-            ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
         }
+
+        if(requestCode == LIST_NOTES){
+            mEventDays.clear();
+        }
+
+        ConsultarNotasMes(mCalendarView.getCurrentPageDate().getTime());
+
+
     }
 
     private void addNoteinCalendar(MyEventDay myEventDay ) throws OutOfDateRangeException {

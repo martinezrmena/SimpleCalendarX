@@ -1,6 +1,7 @@
 package usonsonatemio.com.simplecalendarxexample;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import usonsonatemio.com.simplecalendarxexample.SQLite.DB;
 import usonsonatemio.com.simplecalendarxexample.SQLite.Notas;
 
 public class ListaNotasDia extends AppCompatActivity {
@@ -29,6 +31,7 @@ public class ListaNotasDia extends AppCompatActivity {
     private FloatingActionButton btnUpdateNote, btnDeleteNote;
     private Boolean Modificar, Eliminar;
     private String Message = "";
+    private DB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class ListaNotasDia extends AppCompatActivity {
         btnMenu = findViewById(R.id.btnMainButton);
         btnUpdateNote = findViewById(R.id.btnUpdateNote);
         btnDeleteNote = findViewById(R.id.btnDeleteNote);
+
+        db = new DB(ListaNotasDia.this);
 
         Modificar = false;
         Eliminar = false;
@@ -60,9 +65,9 @@ public class ListaNotasDia extends AppCompatActivity {
 
         lstNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
                 if (Eliminar || Modificar){
-                    Notas n = listaNotas.get(i);
+                    final Notas lastnota = listaNotas.get(position);
 
                     if (Eliminar){
                         Message = "¿Esta seguro de eliminar la nota?";
@@ -70,16 +75,22 @@ public class ListaNotasDia extends AppCompatActivity {
                         Message = "¿Esta seguro de modificar la nota?";
                     }
 
-                    Toast.makeText(ListaNotasDia.this, "Nota: " + n.getId(), Toast.LENGTH_SHORT ).show();
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListaNotasDia.this);
                     builder.setIcon(R.drawable.notes_complete).
                             setTitle("Atención").setMessage(Message).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(ListaNotasDia.this, "Aceptaste exito.", Toast.LENGTH_SHORT ).show();
-                            Modificar = false;
-                            Eliminar = false;
+
+                            if (Eliminar){
+                                db.borrarNota(String.valueOf(lastnota.getId()));
+                                Toast.makeText(ListaNotasDia.this, "Nota eliminada exitosamente.", Toast.LENGTH_SHORT ).show();
+                            }else if(Modificar){
+                                db.guardar_O_ActualizarNotas(lastnota);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            setResult(MainActivity.LIST_NOTES, resultIntent);
+                            finish();
 
                         }
                     }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

@@ -17,7 +17,7 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_note_activity);
 
-        setTitle("Add Note Activity");
+        setTitle("Agregar nota");
 
         final CalendarView datePicker = (CalendarView) findViewById(R.id.datePicker);
         Button button = (Button) findViewById(R.id.addNoteButton);
