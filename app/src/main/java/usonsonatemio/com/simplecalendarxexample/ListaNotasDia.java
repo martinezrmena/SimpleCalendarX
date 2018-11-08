@@ -67,17 +67,21 @@ public class ListaNotasDia extends AppCompatActivity {
         lstNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                int id = 0;
+
                 if (Eliminar || Modificar){
                     final Notas lastnota = listaNotas.get(position);
 
                     if (Eliminar){
                         Message = "¿Esta seguro de eliminar la nota?";
+                        id = R.drawable.ic_delete_note;
                     }else if(Modificar){
                         Message = "¿Esta seguro de modificar la nota?";
+                        id = R.drawable.update_note;
                     }
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListaNotasDia.this);
-                    builder.setIcon(R.drawable.notes_complete).
+                    builder.setIcon(id).
                             setTitle("Atención").setMessage(Message).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

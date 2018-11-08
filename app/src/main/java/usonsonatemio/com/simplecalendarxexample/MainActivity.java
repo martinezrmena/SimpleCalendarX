@@ -1,7 +1,6 @@
 package usonsonatemio.com.simplecalendarxexample;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +11,7 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Notas> lstNotasDia;
     Calendar c;
     Date lastdate;
+    private FloatingActionButton floatingActionButton;
 
     //sirve para manejar la eliminacion
     private Notas nota_temp=null;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mCalendarView = findViewById(R.id.calendarView);
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         setTitle("Agregar notas");
 

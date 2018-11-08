@@ -19,7 +19,8 @@
         <activity android:name=".AddNoteActivity" />
         <activity android:name=".NotePreviewActivity" />
         <activity android:name=".ListaNotasDia" />
-        <activity android:name=".ModificarNota"></activity>
+        <activity android:name=".ModificarNota"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

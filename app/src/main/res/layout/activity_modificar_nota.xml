@@ -4,29 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".ModificarNota">
 
-    <TextView
-        android:id="@+id/lblNota"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nota"
-        android:layout_margin="10dp"
+        android:backgroundTint="@color/materialdarkblue"
         android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textSize="24sp" />
-
-
-    <EditText
-        android:id="@+id/txbNotaModificar"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        card_view:cardCornerRadius="10dp"
         android:layout_margin="8dp"
-        android:background="@null"
-        android:gravity="top"
-        android:hint="Escribir nota" />
+        android:layout_centerInParent="true"
+        card_view:cardElevation="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/update_note"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/lblNota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nota"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="8dp"
+                android:background="@color/white"
+                />
+
+            <EditText
+                android:id="@+id/txbNotaModificar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:gravity="top"
+                android:textColor="@color/white"
+                android:hint="Escribir nota" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/btnModificar"
@@ -36,6 +80,9 @@
         android:layout_centerInParent="true"
         android:layout_margin="20dp"
         android:onClick="btnModificarOnClick"
+        android:textColor="@color/white"
+        android:background="@drawable/buttonpressedstyle"
         android:text="Modificar" />
+
 
 </RelativeLayout>
